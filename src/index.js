@@ -1,7 +1,7 @@
 const dbase = require("./dbase")
 const db = dbase.dbase
 const express = require('express');
-const msg = require('./replies.json')
+const msg = require('./strings.json')
 //const {response} = require("express");
 const app = express();
 const port = 8080;
@@ -9,7 +9,6 @@ const port = 8080;
 app.get('/ghosts', (req, res) => {//query all Ghosts currently in the game
     let sql = 'select ghost_type from ghosts';
     db.query(sql,(err,results) => {
-        if(err) throw err;
         let ghosts = []
         for (const i in results) {
             ghosts.push(results[i]['ghost_type'])
@@ -23,9 +22,8 @@ app.get('/ghost/:name', (req, res) => { //query Evidence for specific Ghost
     name = req.params.name.toLowerCase()
     let sql = "SELECT evidence_type FROM ghostevidencetype where ghost_type = ?";
     db.query(sql, name, (err, results) => {
-        if (err) throw err;
         if (results.length === 0) {
-            res.send(msg.ghostNotFound)
+            res.send(msg.replies.ghostNotFound)
         } else {
         let evidence = []
         for (const i in results) {
@@ -36,34 +34,43 @@ app.get('/ghost/:name', (req, res) => { //query Evidence for specific Ghost
     }
     })
 })
-app.get('/evidence', (req,res) => { //TODO handle empty request
+app.get('/evidence', (req,res) => { //query possible ghosts and remaining evidence based on the number of evidence
     let evidence = req.query['msg'].split(' ')
     let sql;
     switch (evidence.length) {
         case 1:
-            sql = `select g.ghost_type,g2.evidence_type, g3.evidence_type from ghostevidencetype g join ghostevidencetype g2 on g.ghost_type = g2.ghost_type join ghostevidencetype g3 on g.ghost_type = g3.ghost_type where g.evidence_type like '%dots%' and g2.evidence_type not like '%dots%' and g3.evidence_type not like '%dots%' and g3.evidence_type != g2.evidence_type group by g.ghost_type`
-            evidence = [`%${evidence[0]}%`,`%${evidence[0]}`,`%${evidence[0]}%`]
+            sql = msg.sql.evidence1
+            evidence = [`%${evidence[0]}%`,`%${evidence[0]}%`,`%${evidence[0]}%`]
             break;
         case 2:
-            sql = `select g.ghost_type,e.evidence_type from ghostevidencetype g join ghostevidencetype e on g.ghost_type = e.ghost_type where (g.evidence_type like ? or g.evidence_type like ?) and (e.evidence_type not like ? and e.evidence_type not like ?) group by g.ghost_type having count(distinct g.evidence_type) = 2`
-            evidence = [`%${evidence[0]}%`,`%${evidence[1]}`,`%${evidence[0]}%`,`%${evidence[1]}`]
+            sql = msg.sql.evidence2
+            evidence = [`%${evidence[0]}%`,`%${evidence[1]}%`,`%${evidence[0]}%`,`%${evidence[1]}%`]
             break;
         case 3:
-            console.log("3")
+            sql = msg.sql.evidence3
             break;
     }
+    console.log(evidence)
     db.query(sql,evidence,(err,results) => {
-
-        let message = 'Possible Ghost(s): ';
-        console.log(results)
-        for (const i in results) {
-            message += `${results[i]['ghost_type']} (${results[i]['evidence_type']}), `
+        let message = "";
+        switch (evidence.length) {
+            case 3:
+                console.log(results)
+                for (const i in results) {
+                    message += `${results[i]['ghost_type']} (${results[i]['evidence1']} | ${results[i]['evidence2']}), `
+                }
+                break;
+            case 4:
+                console.log(results)
+                for (const i in results) {
+                    message += `${results[i]['ghost_type']} (${results[i]['evidence_type']}), `
+                }
+                break;
         }
-        if (message === 'Possible Ghost(s): ')
-        {
-            res.send(msg.noEvidence)
+        if (message.length === 0) {
+            res.send(msg.replies.noEvidence)
         } else {
-            res.send(message.slice(0, -2))
+            res.send('Possible Ghost(s): ' + message.slice(0, -2))
         }
     })
 })
