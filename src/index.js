@@ -35,7 +35,6 @@ app.get('/ghost/:name', (req, res) => { //query Evidence for specific Ghost
 })
 app.get('/evidence', (req,res) => { //query possible ghosts and remaining evidence based on the number of evidence
     let evidence = req.query['msg'].split(' ')
-    console.log(evidence)
     let sql;
     switch (evidence.length) {
         case 1:
@@ -51,14 +50,10 @@ app.get('/evidence', (req,res) => { //query possible ghosts and remaining eviden
             evidence = [`%${evidence[0]}%`,`%${evidence[1]}%`,`%${evidence[2]}%`]
             break;
     }
-    console.log(evidence)
     db.query(sql,evidence,(err,results) => {
         let message = "";
         switch (evidence.length) {
             case 3:
-                console.log(evidence[0])
-                console.log(evidence[1])
-                console.log(results)
                 if (evidence[0] !== evidence[1]) {
                     res.send('Ghost: ' + results[0]['ghost_type'])
                     return;
