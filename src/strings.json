@@ -6,6 +6,6 @@
   "sql": {
     "evidence1": "select g.ghost_type,g2.evidence_type as evidence1, g3.evidence_type as evidence2 from ghostevidencetype g join ghostevidencetype g2 on g.ghost_type = g2.ghost_type join ghostevidencetype g3 on g.ghost_type = g3.ghost_type where g.evidence_type like ? and g2.evidence_type not like ? and g3.evidence_type not like ? and g3.evidence_type != g2.evidence_type group by g.ghost_type",
     "evidence2": "select g.ghost_type,e.evidence_type from ghostevidencetype g join ghostevidencetype e on g.ghost_type = e.ghost_type where (g.evidence_type like ? or g.evidence_type like ?) and (e.evidence_type not like ? and e.evidence_type not like ?) group by g.ghost_type having count(distinct g.evidence_type) = 2",
-    "evidence3": "placeholder"
+    "evidence3": "select * from ghostevidencetype g1 join ghostevidencetype g2 on g1.ghost_type =g2.ghost_type join ghostevidencetype g3 on g1.ghost_type =g3.ghost_type where g1.evidence_type like ? and g2.evidence_type like ? and g3.evidence_type like ?"
   }
 }
