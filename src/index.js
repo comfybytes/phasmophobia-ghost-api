@@ -6,7 +6,7 @@ const msg = require('./replies.json')
 const app = express();
 const port = 8080;
 
-app.get('/ghosts', (req, res) => { //query all Ghosts currently in the game
+app.get('/ghosts', (req, res) => {//query all Ghosts currently in the game
     let sql = 'select ghost_type from ghosts';
     db.query(sql,(err,results) => {
         if(err) throw err;
@@ -36,7 +36,7 @@ app.get('/ghost/:name', (req, res) => { //query Evidence for specific Ghost
     }
     })
 })
-app.get('/evidence', (req,res) => {
+app.get('/evidence', (req,res) => { //TODO handle empty request
     let evidence = req.query['msg'].split(' ')
     let sql;
     if (evidence.length === 2) {
@@ -44,12 +44,16 @@ app.get('/evidence', (req,res) => {
         evidence = [`%${evidence[0]}%`,`%${evidence[1]}`,`%${evidence[0]}%`,`%${evidence[1]}`]
     }
     db.query(sql,evidence,(err,results) => {
-        if (err) throw err;
         let message = 'Possible Ghost(s): ';
         for (const i in results) {
             message += `${results[i]['ghost_type']} (${results[i]['evidence_type']}), `
         }
-        res.send(message.slice(0,-2))
+        if (message === 'Possible Ghost(s): ')
+        {
+            res.send(msg.noEvidence)
+        } else {
+            res.send(message.slice(0, -2))
+        }
     })
 })
 app.listen(port, () => {
