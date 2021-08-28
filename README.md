@@ -7,7 +7,7 @@ Designed to be easily usable with the common chat bots in Twitch Chat
 ## Installation
 You can add this to your stream by simply copy and pasting these commands to your chat
 
-Command names can of course be chosen freely
+Command names can also be chosen freely
 
 **Nightbot**
 ```
