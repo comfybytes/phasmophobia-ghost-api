@@ -39,12 +39,23 @@ app.get('/ghost/:name', (req, res) => { //query Evidence for specific Ghost
 app.get('/evidence', (req,res) => { //TODO handle empty request
     let evidence = req.query['msg'].split(' ')
     let sql;
-    if (evidence.length === 2) {
-        sql = `select g.ghost_type,e.evidence_type from ghostevidencetype g join ghostevidencetype e on g.ghost_type = e.ghost_type where (g.evidence_type like ? or g.evidence_type like ?) and (e.evidence_type not like ? and e.evidence_type not like ?) group by g.ghost_type having count(distinct g.evidence_type) = 2`
-        evidence = [`%${evidence[0]}%`,`%${evidence[1]}`,`%${evidence[0]}%`,`%${evidence[1]}`]
+    switch (evidence.length) {
+        case 1:
+            sql = `select g.ghost_type,g2.evidence_type, g3.evidence_type from ghostevidencetype g join ghostevidencetype g2 on g.ghost_type = g2.ghost_type join ghostevidencetype g3 on g.ghost_type = g3.ghost_type where g.evidence_type like '%dots%' and g2.evidence_type not like '%dots%' and g3.evidence_type not like '%dots%' and g3.evidence_type != g2.evidence_type group by g.ghost_type`
+            evidence = [`%${evidence[0]}%`,`%${evidence[0]}`,`%${evidence[0]}%`]
+            break;
+        case 2:
+            sql = `select g.ghost_type,e.evidence_type from ghostevidencetype g join ghostevidencetype e on g.ghost_type = e.ghost_type where (g.evidence_type like ? or g.evidence_type like ?) and (e.evidence_type not like ? and e.evidence_type not like ?) group by g.ghost_type having count(distinct g.evidence_type) = 2`
+            evidence = [`%${evidence[0]}%`,`%${evidence[1]}`,`%${evidence[0]}%`,`%${evidence[1]}`]
+            break;
+        case 3:
+            console.log("3")
+            break;
     }
     db.query(sql,evidence,(err,results) => {
+
         let message = 'Possible Ghost(s): ';
+        console.log(results)
         for (const i in results) {
             message += `${results[i]['ghost_type']} (${results[i]['evidence_type']}), `
         }

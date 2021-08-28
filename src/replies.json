@@ -1,4 +1,4 @@
 {
   "ghostNotFound": "enter valid ghost type",
-  "noEvidence": "Please provide evidence 1 to 3 pieces of evidence"
+  "noEvidence": "missing 1 to 3 valid pieces of evidence or no such combination"
 }
