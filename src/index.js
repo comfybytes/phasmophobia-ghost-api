@@ -40,8 +40,10 @@ app.get('/evidence', (req,res) => { //query possible ghosts and remaining eviden
         case 1:
             sql = msg.sql.evidence1
             evidence = [`%${evidence[0]}%`,`%${evidence[0]}%`,`%${evidence[0]}%`]
+            console.log(evidence)
             break;
         case 2:
+            console.log("first switch case in 2")
             sql = msg.sql.evidence2
             evidence = [`%${evidence[0]}%`,`%${evidence[1]}%`,`%${evidence[0]}%`,`%${evidence[1]}%`]
             break;
@@ -52,6 +54,7 @@ app.get('/evidence', (req,res) => { //query possible ghosts and remaining eviden
     }
     db.query(sql,evidence,(err,results) => {
         let message = "";
+        console.log(results);
         switch (evidence.length) {
             case 3:
                 if (evidence[0] !== evidence[1]) {
@@ -64,6 +67,7 @@ app.get('/evidence', (req,res) => { //query possible ghosts and remaining eviden
                 }
                 break;
             case 4:
+
                 for (const i in results) {
                     message += `${results[i]['ghost_type']} (${results[i]['evidence_type']}), `
                 }
