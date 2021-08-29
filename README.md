@@ -1,5 +1,4 @@
 # Phasmophobia Ghost API
-**Hosting for the API hasn't been figured out yet, so it's not in a completly usable state yet. Same for Readme**
 
 A simple API to query Phasmophobia Ghosts and Evidence
 Designed to be easily usable with the common chat bots in Twitch Chat
@@ -11,10 +10,10 @@ Command names can also be chosen freely
 
 **Nightbot**
 ```
-!commands add !ghost placeholder
+!commands add !ghost $(eval '$(urlfetch https://phasmo.witchdrop.me/ghost/$(query))')
 ```
 ```
-!commands add !evidence placeholder
+!commands add !evidence $(eval '$(urlfetch https://phasmo.witchdrop.me/evidence?msg=$(query))')
 ```
 **Streamlabs**
 ```
@@ -34,7 +33,9 @@ Command names can also be chosen freely
 ```
 !evidence {evidence} {evidence} {evidence}
 ```
-1 to 3 pieces of evidence need to be provided. Returns the possible Ghosts and the remaining co-responding evidence
+2 to 3 pieces of evidence need to be provided. Returns the possible Ghosts and the remaining co-responding evidence. 
+
+1 evidence is built into the application, but the response is too long for chat bots to display
 ```
 !ghost {ghost type}
 ```
@@ -45,6 +46,10 @@ Returns the ghost type and it's three pieces of evidences
 !evidence finger dots
 ```
 Returns `Possible Ghost(s): Banshee (Ghost Orb), Goryo (EMF Level 5), Phantom (Spirit Box)`
+```
+!ghost demon
+```
+Returns `Demon: Fingerprints, Freezing Temperatures, Ghost Writing`
 
 **Spelling**
 
