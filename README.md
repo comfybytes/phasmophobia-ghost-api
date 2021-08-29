@@ -24,7 +24,7 @@ Command names can also be chosen freely
 ```
 **Streamlabs**
 ```
-!addcommand !ghost placeholder
+!addcommand !ghost {readapi.https://phasmo.witchdrop.me/ghost/{1}}
 ```
 ```
 !addcommand !evidence placeholder
