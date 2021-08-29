@@ -15,19 +15,19 @@ Command names can also be chosen freely
 ```
 !commands add !evidence $(eval '$(urlfetch https://phasmo.witchdrop.me/evidence?msg=$(query))')
 ```
+**Streamelements**
+```
+!command add !ghost $(urlfetch https://phasmo.witchdrop.me/ghost/$(1:))
+```
+```
+!command add !evidence $(urlfetch https://phasmo.witchdrop.me/evidence?msg=$(1:))
+```
 **Streamlabs**
 ```
 !addcommand !ghost placeholder
 ```
 ```
 !addcommand !evidence placeholder
-```
-**Streamelements**
-```
-!command add !ghost placeholder
-```
-```
-!command add !evidence placeholder
 ```
 ## Usage
 ```
