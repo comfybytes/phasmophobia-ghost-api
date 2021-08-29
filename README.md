@@ -25,11 +25,10 @@ Command names can also be chosen freely
 ```
 **Streamlabs Cloudbot**
 ```
-!addcommand !ghost {readapi.https://phasmo.witchdrop.me/ghost/{1}}
+!addcommand !ghost {readapi.https://phasmo.witchdrop.me/ghost/{start:end}}
 ```
 ```
-Not working properly since entire message after command can't be grabbed (I think). 
-For exactly 2 evidence use: !addcommand !evidence {readapi.https://phasmo.witchdrop.me/evidence?msg={1:2}}
+!addcommand !evidence {readapi.https://phasmo.witchdrop.me/ghost/{start:end}}
 ```
 **Streamlabs Chatbot**
 ```
