@@ -22,12 +22,19 @@ Command names can also be chosen freely
 ```
 !command add !evidence $(urlfetch https://phasmo.witchdrop.me/evidence?msg=$(1:))
 ```
-**Streamlabs**
+**Streamlabs Cloudbot**
 ```
 !addcommand !ghost {readapi.https://phasmo.witchdrop.me/ghost/{1}}
 ```
 ```
 !addcommand !evidence placeholder
+```
+**Streamlabs Chatbot**
+```
+!Command Add !ghost $readapi(https://phasmo.witchdrop.me/ghost/$msg)
+```
+```
+!Command Add !evidence $readapi(https://phasmo.witchdrop.me/evidence?msg=$msg)
 ```
 ## Usage
 ```
