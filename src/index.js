@@ -3,7 +3,7 @@ const db = dbase.dbase
 const express = require('express');
 const msg = require('./strings.json')
 const app = express();
-const port = 8080;
+const port = 5000;
 
 app.get('/ghosts', (req, res) => {//query all Ghosts currently in the game
     let sql = 'select ghost_type from ghosts';
@@ -77,5 +77,5 @@ app.get('/evidence', (req,res) => { //query possible ghosts and remaining eviden
     })
 })
 app.listen(port, () => {
-    console.log(`Example app listening at http://localhost:${port}`)
+    console.log(`app running at http://localhost:${port}`)
 })
