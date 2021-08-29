@@ -1,6 +1,7 @@
 # Phasmophobia Ghost API
 
 A simple API to query Phasmophobia Ghosts and Evidence
+
 Designed to be easily usable with the common chat bots in Twitch Chat
 
 ## Installation
@@ -10,10 +11,10 @@ Command names can also be chosen freely
 
 **Nightbot**
 ```
-!commands add !ghost $(eval '$(urlfetch https://phasmo.witchdrop.me/ghost/$(query))')
+!commands add !ghost $(urlfetch https://phasmo.witchdrop.me/ghost/$(query))
 ```
 ```
-!commands add !evidence $(eval '$(urlfetch https://phasmo.witchdrop.me/evidence?msg=$(query))')
+!commands add !evidence $(urlfetch https://phasmo.witchdrop.me/evidence?msg=$(query))
 ```
 **Streamelements**
 ```
