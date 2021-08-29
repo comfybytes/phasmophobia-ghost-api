@@ -28,7 +28,8 @@ Command names can also be chosen freely
 !addcommand !ghost {readapi.https://phasmo.witchdrop.me/ghost/{1}}
 ```
 ```
-!addcommand !evidence placeholder
+Not working properly since entire message after command can't be grabbed (I think). 
+For exactly 2 evidence use: !addcommand !evidence {readapi.https://phasmo.witchdrop.me/evidence?msg={1:2}}
 ```
 **Streamlabs Chatbot**
 ```
@@ -66,4 +67,3 @@ Returns `Demon: Fingerprints, Freezing Temperatures, Ghost Writing`
 * You can check the spelling in [the Phasmophobia Wiki](https://phasmophobia.fandom.com/wiki/Evidence#Ghost_Evidence)
 ## Contact
 * [witchdrop.dev@gmail.com](mailto:witchdrop.dev@gmail.com)
-* [Twitter](https://twitter.com/witch_drop)
