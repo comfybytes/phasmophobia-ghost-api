@@ -44,7 +44,7 @@ For exactly 2 evidence use: !addcommand !evidence {readapi.https://phasmo.witchd
 ```
 2 to 3 pieces of evidence need to be provided. Returns the possible Ghosts and the remaining co-responding evidence. 
 
-1 evidence is built into the application, but the response is too long for chat bots to display
+1 evidence is built into the application, but the response is too long for some chat bots to display
 ```
 !ghost {ghost type}
 ```
