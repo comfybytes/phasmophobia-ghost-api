@@ -13,8 +13,14 @@ let db = getConnection((err) => {
     if (err){
         throw err;
     }
-    console.log('Database Connected...')
+    console.log('creating Connection...')
 });
+db.connect((err) => {
+    if (err){
+        throw err;
+    }
+    console.log('Database Connected...')
+})
 module.exports = {
     dbase: db
 };
