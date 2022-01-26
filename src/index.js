@@ -5,49 +5,52 @@ const msg = require('./strings.json')
 const app = express();
 const port = 5000;
 
-app.get('/ghosts', (req, res) => {//query all Ghosts currently in the game
-    let sql = 'select ghost_type from ghosts';
+// Query all ghosts currently in the game
+app.get('/ghosts', (req, res) => {
+    const sql = 'select ghost_type from ghosts';
     db.query(sql,(err,results) => {
-        let ghosts = []
+        let ghosts = [];
         for (const i in results) {
-            ghosts.push(results[i]['ghost_type'])
+            ghosts.push(results[i]['ghost_type']);
         }
-        res.send(`Ghosts[${results.length}]: ${ghosts.join(", ")}`)
+        res.send(`Ghosts[${results.length}]: ${ghosts.join(", ")}`);
     })
 });
 
-
-app.get('/ghost/:name', (req, res) => { //query Evidence for specific Ghost
-    name = req.params.name.toLowerCase()
+// Query evidence for specific ghost
+app.get('/ghost/:name', (req, res) => {
+    const name = req.params.name.replace(/\s+/g, ' ').trim().toLowerCase();
     let sql = "SELECT evidence_type FROM ghostevidencetype where ghost_type = ?";
     db.query(sql, name, (err, results) => {
         if (results.length === 0) {
-            res.send(msg.replies.ghostNotFound)
+            res.send(msg.replies.ghostNotFound);
         } else {
-        let evidence = []
-        for (const i in results) {
-            evidence.push(results[i]['evidence_type'])
+            let evidence = [];
+            for (const i in results) {
+                evidence.push(results[i]['evidence_type']);
+            }
+            let message = name[0].toUpperCase() + name.substring(1) + ': ' + evidence.join(', ');
+            res.send(message);
         }
-        let message = name[0].toUpperCase() + name.substring(1) + ': ' + evidence.join(', ')
-        res.send(message)
-    }
     })
 })
-app.get('/evidence', (req,res) => { //query possible ghosts and remaining evidence based on the number of evidence
-    let evidence = req.query['msg'].split(' ')
+
+// Query possible ghosts and remaining evidence based on the number of evidence
+app.get('/evidence', (req,res) => {
+    let evidence = req.query['msg'].replace(/\s+/g, ' ').trim().split(' ');
     let sql;
     switch (evidence.length) {
         case 1:
-            sql = msg.sql.evidence1
-            evidence = [`%${evidence[0]}%`,`%${evidence[0]}%`,`%${evidence[0]}%`]
+            sql = msg.sql.evidence1;
+            evidence = [`%${evidence[0]}%`,`%${evidence[0]}%`,`%${evidence[0]}%`];
             break;
         case 2:
-            sql = msg.sql.evidence2
-            evidence = [`%${evidence[0]}%`,`%${evidence[1]}%`,`%${evidence[0]}%`,`%${evidence[1]}%`]
+            sql = msg.sql.evidence2;
+            evidence = [`%${evidence[0]}%`,`%${evidence[1]}%`,`%${evidence[0]}%`,`%${evidence[1]}%`];
             break;
         case 3:
-            sql = msg.sql.evidence3
-            evidence = [`%${evidence[0]}%`,`%${evidence[1]}%`,`%${evidence[2]}%`]
+            sql = msg.sql.evidence3;
+            evidence = [`%${evidence[0]}%`,`%${evidence[1]}%`,`%${evidence[2]}%`];
             break;
     }
     db.query(sql,evidence,(err,results) => {
@@ -55,28 +58,28 @@ app.get('/evidence', (req,res) => { //query possible ghosts and remaining eviden
         switch (evidence.length) {
             case 3:
                 if (evidence[0] !== evidence[1]) {
-                    res.send('Ghost: ' + results[0]['ghost_type'])
+                    res.send(`Ghost: ${results[0]['ghost_type']}`);
                     return;
                 } else {
                     for (const i in results) {
-                        message += `${results[i]['ghost_type']} (${results[i]['evidence1']} | ${results[i]['evidence2']}), `
+                        message += `${results[i]['ghost_type']} (${results[i]['evidence1']} | ${results[i]['evidence2']}), `;
                     }
                 }
                 break;
             case 4:
-
                 for (const i in results) {
-                    message += `${results[i]['ghost_type']} (${results[i]['evidence_type']}), `
+                    message += `${results[i]['ghost_type']} (${results[i]['evidence_type']}), `;
                 }
                 break;
         }
         if (message.length === 0) {
-            res.send(msg.replies.noEvidence)
+            res.send(msg.replies.noEvidence);
         } else {
-            res.send('Possible Ghost(s): ' + message.slice(0, -2))
+            res.send(`Possible Ghost(s): ${message.slice(0, -2)}`);
         }
     })
 })
+
 app.listen(port, () => {
-    console.log(`app running at http://localhost:${port}`)
+    console.log(`App running at http://localhost:${port}`);
 })
